@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Chat.css';
-import { Avatar, IconButton } from '@material-ui/core';
-import  MoreVertIcon  from "@material-ui/icons/MoreVert";
-import  SearchOutlined  from "@material-ui/icons/SearchOutlined";
-import AttachFile from "@material-ui/icons/AttachFile";
-import InsertEmoticon from "@material-ui/icons/InsertEmoticon";
-import MicIcon from "@material-ui/icons/Mic";
+import { Avatar } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useParams } from "react-router-dom";
 import db from "../firebase.js";
 import { useStateValue } from "../StateProvider";
@@ -29,6 +25,7 @@ function Chat() {
             .orderBy('timestamp', 'asc')
             .onSnapshot(snapshot => setMessages(snapshot.docs.map(doc => doc.data())));
         }
+        chatHeight();
     }, [roomId]);
 
     useEffect(() => {
@@ -45,13 +42,26 @@ function Chat() {
         })
         setInput("");
     };
-    
+
+    const leaveChatHandler = () => {
+        window.history.back();
+    };
+
+const chatHeight = () => {
+     if(window.innerWidth <= 767) {
+         var mobileChatHeight = window.innerHeight;
+        document.getElementById("chat").style.height = mobileChatHeight + "px";
+  }
+}
+
 
     return (
 
-        <div className="chat">
-
+        <div className="chat" id="chat">
+            
             <div className="chat__header">
+
+                <ArrowBackIcon className="chat__leaveButton" onClick={leaveChatHandler}/>
 
                 <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`}/>
 
@@ -62,18 +72,6 @@ function Chat() {
                             messages[messages.length - 1]?.timestamp?.toDate()).toUTCString()
                         }
                     </p>
-                </div>
-
-                <div className="chat__headerRight">
-                    <IconButton>
-                        <SearchOutlined />
-                    </IconButton>
-                    <IconButton>
-                        <AttachFile />
-                    </IconButton>
-                    <IconButton>
-                        <MoreVertIcon />
-                    </IconButton>
                 </div>
 
             </div>
@@ -92,7 +90,7 @@ function Chat() {
             </div>
 
             <div className="chat__footer">
-                <InsertEmoticon />
+             
                 <form>
                     <input 
                      placeholder="Type a message..." 
@@ -101,7 +99,7 @@ function Chat() {
                      onChange={(e) => setInput(e.target.value)}/>
                     <button onClick={sendMessage}>Send a message</button>
                 </form>
-                <MicIcon />
+             
             </div>
 
         </div>

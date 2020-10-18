@@ -24,10 +24,10 @@ function Login() {
         <div className="login">
             <div className="login__container">
 
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/800px-WhatsApp.svg.png" alt="logo" />
+                <img src="/logo.png" alt="logo" />
             
                 <div className="login__text">
-                    <h1>Sign in to WhatsApp Clone</h1>
+                    <h1>Tomessenger</h1>
                 </div>
 
                 <Button onClick={signIn}>
